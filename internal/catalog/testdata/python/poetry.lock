@@ -1,0 +1,17 @@
+[[package]]
+name = "requests"
+version = "2.31.0"
+category = "main"
+optional = false
+
+[[package]]
+name = "pytest"
+version = "8.1.1"
+group = "dev"
+optional = false
+
+[[package]]
+name = "coverage"
+version = "7.4.4"
+category = "test"
+optional = false

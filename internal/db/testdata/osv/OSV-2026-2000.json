@@ -1,0 +1,29 @@
+{
+  "id": "OSV-2026-2000",
+  "aliases": ["GHSA-dddd-eeee-ffff"],
+  "summary": "requests vulnerable before 2.31.1",
+  "details": "Demo vulnerability for Python requests package.",
+  "severity": [
+    { "type": "CVSS_V3", "score": "medium" }
+  ],
+  "references": [
+    { "type": "WEB", "url": "https://example.com/advisories/OSV-2026-2000" }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "PyPI",
+        "name": "requests"
+      },
+      "ranges": [
+        {
+          "type": "SEMVER",
+          "events": [
+            { "introduced": "0" },
+            { "fixed": "2.31.1" }
+          ]
+        }
+      ]
+    }
+  ]
+}

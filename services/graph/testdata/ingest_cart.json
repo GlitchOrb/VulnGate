@@ -1,0 +1,46 @@
+{
+  "service": "cart",
+  "artifact": {
+    "id": "ghcr.io/acme/cart:2.3.1",
+    "name": "cart",
+    "type": "container",
+    "digest": "sha256:cart231"
+  },
+  "sbom": {
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.5",
+    "serialNumber": "urn:uuid:cart-1",
+    "components": [
+      {
+        "bom-ref": "pkg:npm/lodash@4.17.20",
+        "type": "library",
+        "name": "lodash",
+        "version": "4.17.20",
+        "purl": "pkg:npm/lodash@4.17.20"
+      },
+      {
+        "bom-ref": "pkg:npm/dayjs@1.11.10",
+        "type": "library",
+        "name": "dayjs",
+        "version": "1.11.10",
+        "purl": "pkg:npm/dayjs@1.11.10"
+      }
+    ],
+    "dependencies": [],
+    "vulnerabilities": [
+      {
+        "id": "OSV-2026-9999",
+        "ratings": [
+          {
+            "severity": "high"
+          }
+        ],
+        "affects": [
+          {
+            "ref": "pkg:npm/lodash@4.17.20"
+          }
+        ]
+      }
+    ]
+  }
+}

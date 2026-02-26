@@ -1,0 +1,31 @@
+services:
+  neo4j:
+    image: neo4j:5.26
+    container_name: vulngate-neo4j
+    environment:
+      NEO4J_AUTH: neo4j/neo4jtest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p neo4jtest 'RETURN 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  graph:
+    build:
+      context: ../..
+      dockerfile: services/graph/Dockerfile
+    container_name: vulngate-graph
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    environment:
+      VULNGATE_GRAPH_BACKEND: neo4j
+      VULNGATE_GRAPH_ADDR: :8090
+      VULNGATE_GRAPH_NEO4J_URI: bolt://neo4j:7687
+      VULNGATE_GRAPH_NEO4J_USER: neo4j
+      VULNGATE_GRAPH_NEO4J_PASS: neo4jtest
+    ports:
+      - "8090:8090"

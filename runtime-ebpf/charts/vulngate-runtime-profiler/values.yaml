@@ -1,0 +1,36 @@
+image:
+  repository: ghcr.io/vulngate/runtime-ebpf-agent
+  tag: latest
+  pullPolicy: IfNotPresent
+
+mode: attach
+outputPath: /var/lib/vulngate/profile.json
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+securityContext:
+  privileged: true
+  runAsUser: 0
+  capabilities:
+    add:
+      - BPF
+      - PERFMON
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+env: []
+
+config:
+  pollIntervalSeconds: 5
+  durationSeconds: 0
+  probes: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

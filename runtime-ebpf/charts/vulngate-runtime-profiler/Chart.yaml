@@ -1,0 +1,6 @@
+apiVersion: v2
+name: vulngate-runtime-profiler
+description: Optional VulnGate runtime reachability profiler (eBPF)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

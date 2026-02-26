@@ -1,0 +1,8 @@
+policy:
+  fail_on_severity: [high, critical]
+  scope:
+    production_mode: true
+    ignore_dev_dependencies: true
+    ignore_test_dependencies: true
+  reachability:
+    require_reachable_for_severities: [high, critical]

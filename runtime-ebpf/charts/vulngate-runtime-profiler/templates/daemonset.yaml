@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Release.Name }}-runtime-profiler
+  labels:
+    app.kubernetes.io/name: vulngate-runtime-profiler
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vulngate-runtime-profiler
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vulngate-runtime-profiler
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}-runtime-profiler
+      hostPID: true
+      containers:
+        - name: runtime-profiler
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --mode={{ .Values.mode }}
+            - --config=/etc/vulngate/profiler-config.json
+            - --output={{ .Values.outputPath }}
+          securityContext:
+            privileged: {{ .Values.securityContext.privileged }}
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            capabilities:
+              add:
+{{- range .Values.securityContext.capabilities.add }}
+                - {{ . }}
+{{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+{{ toYaml .Values.env | indent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/vulngate
+              readOnly: true
+            - name: host-lib
+              mountPath: /var/lib/vulngate
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-runtime-profiler-config
+        - name: host-lib
+          hostPath:
+            path: /var/lib/vulngate
+            type: DirectoryOrCreate
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}

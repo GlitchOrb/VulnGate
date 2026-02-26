@@ -1,0 +1,7 @@
+# runtime requirements
+Flask==3.0.2
+pytest==8.1.1 ; python_version >= "3.8"
+urllib3>=2.2.1
+
+--extra-index-url https://example.invalid/simple
+-r common.txt

@@ -1,0 +1,10 @@
+{
+  "name": "real-vuln-npm-lodash",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fixture for real vulnerability scan demo",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "4.17.20"
+  }
+}

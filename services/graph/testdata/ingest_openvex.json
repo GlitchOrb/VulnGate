@@ -1,0 +1,34 @@
+{
+  "service": "checkout",
+  "artifactID": "ghcr.io/acme/checkout:1.0.0",
+  "document": {
+    "@context": "https://openvex.dev/ns/v0.2.0",
+    "@id": "urn:uuid:openvex-checkout",
+    "author": "VulnGate",
+    "timestamp": "2026-02-26T12:00:00Z",
+    "version": 1,
+    "statements": [
+      {
+        "id": "stmt-checkout-1",
+        "vulnerability": {
+          "name": "CVE-2026-1111"
+        },
+        "products": [
+          "pkg:npm/axios@1.5.0"
+        ],
+        "status": "affected"
+      },
+      {
+        "id": "stmt-checkout-2",
+        "vulnerability": {
+          "name": "CVE-2026-2222"
+        },
+        "products": [
+          "pkg:npm/dayjs@1.11.10"
+        ],
+        "status": "not_affected",
+        "justification": "code_not_present"
+      }
+    ]
+  }
+}

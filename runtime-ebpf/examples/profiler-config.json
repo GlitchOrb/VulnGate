@@ -1,0 +1,19 @@
+{
+  "pollIntervalSeconds": 5,
+  "durationSeconds": 120,
+  "replayCommand": [
+    "go",
+    "test",
+    "./..."
+  ],
+  "probes": [
+    {
+      "id": 1,
+      "purl": "pkg:golang/github.com/example/app@1.2.3",
+      "symbol": "main.main",
+      "binary": "/usr/local/bin/app",
+      "uprobe": "main.main",
+      "pid": -1
+    }
+  ]
+}

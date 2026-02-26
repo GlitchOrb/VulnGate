@@ -1,0 +1,22 @@
+{
+  "service": "checkout",
+  "artifact": {
+    "id": "ghcr.io/acme/checkout:1.0.0",
+    "name": "checkout",
+    "type": "container",
+    "digest": "sha256:checkout123"
+  },
+  "attestations": [
+    {
+      "id": "att-prov-checkout",
+      "type": "provenance",
+      "predicateType": "https://slsa.dev/provenance/v1",
+      "issuer": "github-actions",
+      "subjectDigest": "sha256:checkout123",
+      "metadata": {
+        "buildType": "https://github.com/Actions",
+        "workflow": "ci.yml"
+      }
+    }
+  ]
+}

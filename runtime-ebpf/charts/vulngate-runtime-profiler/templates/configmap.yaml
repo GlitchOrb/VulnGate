@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-runtime-profiler-config
+  labels:
+    app.kubernetes.io/name: vulngate-runtime-profiler
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  profiler-config.json: |
+    {
+      "pollIntervalSeconds": {{ .Values.config.pollIntervalSeconds }},
+      "durationSeconds": {{ .Values.config.durationSeconds }},
+      "probes": {{ .Values.config.probes | toJson }}
+    }

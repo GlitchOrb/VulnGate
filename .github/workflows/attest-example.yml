@@ -1,0 +1,78 @@
+name: Attestation Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-scan-sign:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+      COSIGN_ID_TOKEN: ${{ secrets.COSIGN_ID_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build VulnGate
+        run: |
+          mkdir -p dist artifacts
+          go build -o dist/vulngate ./cmd/vulngate
+
+      - name: Install cosign (optional)
+        if: ${{ env.COSIGN_KEY != '' || env.COSIGN_ID_TOKEN != '' }}
+        uses: sigstore/cosign-installer@v3
+
+      - name: Select signing mode
+        run: |
+          SIGNER="none"
+          SIGN_ARGS=""
+          if [ -n "${COSIGN_KEY}" ] || [ -n "${COSIGN_ID_TOKEN}" ]; then
+            SIGNER="cosign"
+          fi
+          if [ -n "${COSIGN_KEY}" ]; then
+            SIGN_ARGS="--sign-key ${COSIGN_KEY}"
+          fi
+          echo "SIGNER=${SIGNER}" >> "$GITHUB_ENV"
+          echo "SIGN_ARGS=${SIGN_ARGS}" >> "$GITHUB_ENV"
+
+      - name: Generate SBOM + attestation
+        run: |
+          ./dist/vulngate sbom . --format json \
+            --signer "${SIGNER}" ${SIGN_ARGS} \
+            --attest-bundle artifacts/sbom.attest.json \
+            > artifacts/sbom.json
+
+      - name: Run scan + attestation
+        run: |
+          set +e
+          ./dist/vulngate scan . \
+            --signer "${SIGNER}" ${SIGN_ARGS} \
+            --attest-bundle artifacts/scan.attest.json \
+            > artifacts/scan.sarif
+          SCAN_EXIT=$?
+          set -e
+          if [ "$SCAN_EXIT" -eq 2 ]; then
+            echo "scan failed with tool error"
+            exit 2
+          fi
+          echo "scan completed with exit code: ${SCAN_EXIT}"
+
+      - name: Upload attestation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vulngate-attestations
+          path: |
+            artifacts/sbom.json
+            artifacts/sbom.attest.json
+            artifacts/scan.sarif
+            artifacts/scan.attest.json

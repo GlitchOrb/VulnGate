@@ -1,0 +1,11 @@
+/bin/
+/dist/
+.vulngate/
+.vulngate-*/
+.tmp/
+*.sarif
+results.sarif
+*.db
+*.sqlite
+coverage.out
+.DS_Store
