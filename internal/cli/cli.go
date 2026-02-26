@@ -205,7 +205,7 @@ func (a *App) runScan(ctx context.Context, args []string) int {
 		Project:      project,
 		TargetPath:   target,
 		Dependencies: deps,
-		GeneratedAt:  time.Now().UTC(),
+		GeneratedAt:  time.Now().Local(),
 	})
 	if err != nil {
 		fmt.Fprintf(a.stderr, "scan failed: %v\n", err)
@@ -267,7 +267,7 @@ func (a *App) runDBSeedExample(ctx context.Context, args []string) int {
 	}
 
 	vuln := model.Vulnerability{
-		ID:          "OSV-2026-0001",
+		ID:          "test_vulnerability",
 		Summary:     "Example vulnerable range for demonstration and tests",
 		Severity:    model.SeverityHigh,
 		PackagePURL: "pkg:golang/github.com/example/insecure-lib",
