@@ -188,38 +188,6 @@ Real vulnerability demo:
 ./examples/scripts/run_real_vuln_demo.sh
 ```
 
-## Architecture Overview
-
-```text
-┌───────────────────────┐
-|   Version Control      |
-|  (GitHub/GitLab/Tree)  |
-└───────────┬───────────┬┘
-            |           |
-            v           v
-    CI/CD Trigger      Policy Engine (optional)
- (Push / Merge Request)│
-            │           │
-            v           v
-   ┌──────────────────────────┐
-   │ CI/CD Orchestrator (Jenkins, GitHub Actions, GitLab CI, CircleCI) │
-   └──────────────────────────┘
-            │
-      ┌───────────────┬──────────────────┬──────────────────┐
-      v               v                  v                  v
-  Source Code     Dependencies        Containers         IaC
-  Scanning (SAST) Scanning (SCA)      Image Scanning     IaC Scanning
-     |               |                    |                  |
-     v               v                    v                  v
- Static Analyzer  FossID/Snyk/Trivy     Trivy/Clair/Kube-bench    KICS/Checkov
-     |               |                    |                        |
-     v               v                    v                        v
-  Reports (SARIF/JSON/HTML) -> Policy Engine -> Block/Approve
-     |
-     v
-Notification / Dashboard / Reports
-```
-
 ## License
 
 MIT
