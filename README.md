@@ -2,7 +2,8 @@
 
 > @GlitchOrb
 
-[![GitHub stars](https://img.shields.io/github/stars/GlitchOrb/vulngate.svg?style=social&label=Star)](https://github.com/GlitchOrb/vulngate)
+
+[![GitHub stars](https://img.shields.io/github/stars/GlitchOrb/vulngate?style=for-the-badge&color=FFD700&logo=github&logoColor=black)](https://github.com/GlitchOrb/vulngate)
 
 
 VulnGate is an open-source, offline-first CI/CD vulnerability scanner and policy gate.
