@@ -2,10 +2,6 @@
 
 > @GlitchOrb
 
-
-[![GitHub stars](https://img.shields.io/github/stars/GlitchOrb/vulngate?style=for-the-badge&color=FFD700&logo=github&logoColor=black)](https://github.com/GlitchOrb/vulngate)
-
-
 VulnGate is an open-source, offline-first CI/CD vulnerability scanner and policy gate.
 The MVP is a single-binary CLI with **SARIF 2.1.0 to stdout** and logs/errors on stderr.
 
