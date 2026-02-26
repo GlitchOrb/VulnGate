@@ -20,7 +20,9 @@ import (
 	"github.com/GlitchOrb/vulngate/plugins/reachability/dependency"
 	"github.com/GlitchOrb/vulngate/plugins/reachability/runtimeebpf"
 	"github.com/GlitchOrb/vulngate/plugins/reachability/staticcallgraph"
-	sarifrenderer "github.com/GlitchOrb/vulngate/plugins/renderers/sarif"
+	consolerenderer "github.com/GlitchOrb/vulngate/pkg/render/console"
+	htmlrenderer "github.com/GlitchOrb/vulngate/pkg/render/html"
+	sarifrenderer "github.com/GlitchOrb/vulngate/pkg/render/sarif"
 	"github.com/GlitchOrb/vulngate/plugins/scanners/localdb"
 )
 
@@ -81,7 +83,7 @@ func (a *App) runScan(ctx context.Context, args []string) int {
 
 	fs := flag.NewFlagSet("scan", flag.ContinueOnError)
 	fs.SetOutput(a.stderr)
-	fs.StringVar(&format, "format", "sarif", "Output format. Must be sarif for MVP.")
+	fs.StringVar(&format, "format", "html", "Output format (html, console, sarif).")
 	fs.StringVar(&dbPath, "db", "vulngate.db", "Path to embedded SQLite vulnerability DB.")
 	fs.StringVar(&target, "target", ".", "Project root path for dependency discovery.")
 	fs.StringVar(&project, "project", "", "Logical project name in reports.")
@@ -101,8 +103,8 @@ func (a *App) runScan(ctx context.Context, args []string) int {
 		return 2
 	}
 
-	if format != "sarif" {
-		fmt.Fprintf(a.stderr, "unsupported format %q: only sarif is supported in MVP\n", format)
+	if format != "sarif" && format != "console" && format != "html" {
+		fmt.Fprintf(a.stderr, "unsupported format %q: only html, sarif and console are supported\n", format)
 		return 2
 	}
 
@@ -187,7 +189,15 @@ func (a *App) runScan(ctx context.Context, args []string) int {
 		}
 	}
 	if err := e.RegisterRenderer(sarifrenderer.New()); err != nil {
-		fmt.Fprintf(a.stderr, "register renderer: %v\n", err)
+		fmt.Fprintf(a.stderr, "register sarif renderer: %v\n", err)
+		return 1
+	}
+	if err := e.RegisterRenderer(consolerenderer.New()); err != nil {
+		fmt.Fprintf(a.stderr, "register console renderer: %v\n", err)
+		return 1
+	}
+	if err := e.RegisterRenderer(htmlrenderer.New()); err != nil {
+		fmt.Fprintf(a.stderr, "register html renderer: %v\n", err)
 		return 1
 	}
 

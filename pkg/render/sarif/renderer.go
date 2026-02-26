@@ -78,6 +78,10 @@ func New() *Renderer {
 	return &Renderer{}
 }
 
+func (r *Renderer) Name() string {
+	return "sarif"
+}
+
 func (r *Renderer) Render(w io.Writer, report model.Report) error {
 	rulesMap := map[string]rule{}
 	results := make([]result, 0, len(report.Findings))
